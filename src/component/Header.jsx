@@ -16,18 +16,19 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Avatar, Stack } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
-const navItems = ["Home", "About", "Contact", "Sign In", "Sign Up"];
+const navItems = ["Home", "About", "Contact"];
 
 function Header(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-
+  let { user } = useSelector((state) => state.app);
+  console.log("🚀 ~ Header ~ user:", user);
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
@@ -43,10 +44,13 @@ function Header(props) {
           </ListItem>
         ))}
         <ListItem disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primaryTypographyProps={{color:'error'}} primary={'Log Out'} />
-            </ListItemButton>
-          </ListItem>
+          <ListItemButton sx={{ textAlign: "center" }}>
+            <ListItemText
+              primaryTypographyProps={{ color: "error" }}
+              primary={"Log Out"}
+            />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
@@ -55,9 +59,9 @@ function Header(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", marginBottom: "65px" }}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar component="nav" sx={{background:'rgba(0,0,0,0.5)'}}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -68,22 +72,32 @@ function Header(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Stack width={'100%'} direction="row" justifyContent={"space-between"}>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1}}
-            >
+          <Stack
+            width={"100%"}
+            direction="row"
+            justifyContent={'space-between'}
+            alignItems={"center"}
+          >
+            <Typography variant="h6" fontWeight={'bold'} component="div">
               Facebook Clone
             </Typography>
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+            <Stack sx={{ display: { xs: "none", sm: "flex" } }} gap={2} direction={'row'}>
               {navItems.map((item) => (
-                <Button key={item} sx={{ color: "#fff" }}>
+                <Button variant="text" key={item} sx={{ color: "#fff" }}>
                   {item}
                 </Button>
               ))}
-            </Box>
-            <Avatar src="/sdf/sd" alt="Nehal" />
+            </Stack>
+
+            {user ? (
+              <Stack>
+                <Avatar src="/sdf/sd" alt="Nehal" />
+              </Stack>
+            ) : (
+              <Stack>
+                <Button variant="contained" color="black" sx={{borderRadius:'25px'}}>Sign Up</Button>
+              </Stack>
+            )}
           </Stack>
         </Toolbar>
       </AppBar>

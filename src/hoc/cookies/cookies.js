@@ -10,3 +10,12 @@ export async function createCookie({ value }) {
     return error;
   }
 }
+export async function getCookie() {
+  try {
+    let cookieStore = await cookies();
+    let result = cookieStore.get(process.env.NEXT_PUBLIC_ACCESS_TOKEN);
+    return result;
+  } catch (error) {
+    return error;
+  }
+}

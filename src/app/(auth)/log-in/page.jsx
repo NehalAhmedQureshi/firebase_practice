@@ -1,15 +1,20 @@
 "use client";
 import { createCookie } from "@/hoc/cookies/cookies";
+import { setUser } from "@/redux/slices/appSlice";
 import { auth, db, provider } from "@/utils/firebase";
 import { Login } from "@mui/icons-material";
 import { Button } from "@mui/joy";
 import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { redirect, useRouter } from "next/navigation";
+
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function Page() {
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
+  const dispatch = useDispatch();
   async function signIn() {
     try {
       setLoading(true);
@@ -24,9 +29,8 @@ export default function Page() {
       // Create a document reference
       const userRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(userRef);
-      console.log("🚀 ~ signIn ~ docSnap:", docSnap)
       // Set user data in Firestore
-      await setDoc(userRef, {
+      const userProfile = {
         name: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
@@ -35,11 +39,14 @@ export default function Page() {
         firstName: user.displayName?.split(" ")[0] || "",
         lastName: user.displayName?.split(" ")[1] || "",
         createdAt: new Date(), // Add a timestamp for tracking
-      });
-
+      };
+      await setDoc(userRef, userProfile);
+      dispatch(setUser(userProfile));
       // Store access token in localStorage
-      localStorage.setItem("access_token", JSON.stringify(user.accessToken));
-      createCookie({ value: JSON.stringify(user) });
+      createCookie({
+        value: JSON.stringify({ user: userProfile, access_token: user?.accessToken }),
+      });
+      router.push("/");
     } catch (error) {
       console.error("Error signing in:", error);
     } finally {
@@ -49,7 +56,7 @@ export default function Page() {
 
   return (
     <>
-      <div>Hello Facebook Clone {loading && 'loading...'}</div>
+      <div>Hello Facebook Clone {loading && "loading..."}</div>
       <Button
         endDecorator={<Login />}
         onClick={signIn}
