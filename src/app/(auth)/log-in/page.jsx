@@ -4,6 +4,7 @@ import { setUser } from "@/redux/slices/appSlice";
 import { auth, db, provider } from "@/utils/firebase";
 import { Login } from "@mui/icons-material";
 import { Button } from "@mui/joy";
+import { Stack, TextField, Typography } from "@mui/material";
 import { signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { redirect, useRouter } from "next/navigation";
@@ -44,7 +45,10 @@ export default function Page() {
       dispatch(setUser(userProfile));
       // Store access token in localStorage
       createCookie({
-        value: JSON.stringify({ user: userProfile, access_token: user?.accessToken }),
+        value: JSON.stringify({
+          user: userProfile,
+          access_token: user?.accessToken,
+        }),
       });
       router.push("/");
     } catch (error) {
@@ -55,8 +59,29 @@ export default function Page() {
   }
 
   return (
-    <>
-      <div>Hello Facebook Clone {loading && "loading..."}</div>
+    <Stack justifyContent={"center"} alignItems={"center"} height={"70vh"}>
+      <Stack
+        gap={4}
+        minWidth={500}
+        bgcolor={"rgba(255, 255, 255, 0.5)"}
+        borderRadius={2}
+        padding={4}
+      >
+        <Typography variant="h4" mb={3} textAlign={'center'} fontFamily={'fantasy'} fontWeight={'bold'}>Sign In</Typography>
+        <TextField
+          variant="standard"
+          name="email"
+          type="email"
+          placeholder="Enter your email address"
+        />
+        <TextField
+          variant="standard"
+          name="password"
+          type="password"
+          placeholder="Enter your password"
+        />
+        <Button variant="outlined">Sign Up</Button>
+      </Stack>
       <Button
         endDecorator={<Login />}
         onClick={signIn}
@@ -65,6 +90,6 @@ export default function Page() {
       >
         Sign In With Google
       </Button>
-    </>
+    </Stack>
   );
 }

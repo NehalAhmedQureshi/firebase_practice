@@ -12,7 +12,6 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ReduxProvider>
-          <Header />
           {children}
         </ReduxProvider>
       </body>

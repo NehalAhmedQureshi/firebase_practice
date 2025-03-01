@@ -1,8 +1,9 @@
-'use client'
+"use client";
 import { auth, db } from "@/utils/firebase";
 import { useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
-
+import Header from "@/component/Header";
+import './globals.css'
 export default function TestFirebase() {
   useEffect(() => {
     async function checkFirebase() {
@@ -23,5 +24,10 @@ export default function TestFirebase() {
     checkFirebase();
   }, []);
 
-  return <div>Check the console for Firebase connection status.</div>;
+  return (
+    <>
+      <Header />
+      <div>Check the console for Firebase connection status.</div>
+    </>
+  );
 }
