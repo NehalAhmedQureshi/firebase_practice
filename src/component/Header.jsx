@@ -17,6 +17,8 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Avatar, Stack } from "@mui/material";
 import { useSelector } from "react-redux";
+import { handleSignOut } from "@/hoc/useSignOut";
+import { useRouter } from "next/navigation";
 
 const drawerWidth = 240;
 const navItems = ["Home", "About", "Contact"];
@@ -24,11 +26,11 @@ const navItems = ["Home", "About", "Contact"];
 function Header(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const router = useRouter()
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
   let { user } = useSelector((state) => state.app);
-  console.log("🚀 ~ Header ~ user:", user);
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
@@ -48,6 +50,10 @@ function Header(props) {
             <ListItemText
               primaryTypographyProps={{ color: "error" }}
               primary={"Log Out"}
+              onClick={()=>{
+                handleSignOut()
+                router.push('/log-in')
+              }}
             />
           </ListItemButton>
         </ListItem>

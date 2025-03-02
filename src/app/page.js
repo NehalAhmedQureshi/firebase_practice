@@ -3,7 +3,7 @@ import { auth, db } from "@/utils/firebase";
 import { useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import Header from "@/component/Header";
-import './globals.css'
+import { Typography } from "@mui/material";
 export default function TestFirebase() {
   useEffect(() => {
     async function checkFirebase() {
@@ -27,7 +27,7 @@ export default function TestFirebase() {
   return (
     <>
       <Header />
-      <div>Check the console for Firebase connection status.</div>
+      <Typography variant="h4" fontFamily={'serif'} fontWeight={'bold'} textAlign={'center'} my={4}>Post</Typography>
     </>
   );
 }

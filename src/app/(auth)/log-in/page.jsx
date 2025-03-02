@@ -2,7 +2,7 @@
 import { createCookie } from "@/hoc/cookies/cookies";
 import { setUser } from "@/redux/slices/appSlice";
 import { auth, db, provider } from "@/utils/firebase";
-import { Login } from "@mui/icons-material";
+import { Google, Login } from "@mui/icons-material";
 import { Button } from "@mui/joy";
 import { Stack, TextField, Typography } from "@mui/material";
 import { signInWithPopup } from "firebase/auth";
@@ -39,10 +39,9 @@ export default function Page() {
         uid: user.uid,
         firstName: user.displayName?.split(" ")[0] || "",
         lastName: user.displayName?.split(" ")[1] || "",
-        createdAt: new Date(), // Add a timestamp for tracking
       };
       await setDoc(userRef, userProfile);
-      dispatch(setUser(userProfile));
+      dispatch(setUser({...userProfile}));
       // Store access token in localStorage
       createCookie({
         value: JSON.stringify({
@@ -63,11 +62,20 @@ export default function Page() {
       <Stack
         gap={4}
         minWidth={500}
-        bgcolor={"rgba(255, 255, 255, 0.5)"}
+        bgcolor={"rgba(0, 0, 0, 0.2)"}
         borderRadius={2}
         padding={4}
       >
-        <Typography variant="h4" mb={3} textAlign={'center'} fontFamily={'fantasy'} fontWeight={'bold'}>Sign In</Typography>
+        <Typography
+          variant="h4"
+          mb={3}
+          textAlign={"center"}
+          fontFamily={"fantasy"}
+          fontWeight={"bold"}
+          color="primary"
+        >
+          Sign In
+        </Typography>
         <TextField
           variant="standard"
           name="email"
@@ -80,16 +88,16 @@ export default function Page() {
           type="password"
           placeholder="Enter your password"
         />
-        <Button variant="outlined">Sign Up</Button>
+        <Button variant="solid">Sign Up</Button>
+        <Button
+          endDecorator={<Login />}
+          startDecorator={<Google/>}
+          onClick={signIn}
+          variant="soft"
+        >
+          Sign In With Google
+        </Button>
       </Stack>
-      <Button
-        endDecorator={<Login />}
-        onClick={signIn}
-        variant="soft"
-        color="neutral"
-      >
-        Sign In With Google
-      </Button>
     </Stack>
   );
 }
