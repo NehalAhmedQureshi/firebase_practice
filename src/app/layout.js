@@ -1,19 +1,23 @@
+import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/component/Header";
 import ReduxProvider from "@/redux/ReduxProvider";
+import { ErrorBoundary } from 'react-error-boundary';
+import Error from './error';
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "FaceBook Clone",
-  description: "Create by NehalAhmedQureshi.",
+  title: "Facebook Clone",
+  description: "A Facebook clone built with Next.js",
 };
 
-export default async function RootLayout({ children }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
-        <ReduxProvider>
-          {children}
-        </ReduxProvider>
+      <body className={inter.className}>
+        <ErrorBoundary FallbackComponent={Error}>
+          <ReduxProvider>{children}</ReduxProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );
