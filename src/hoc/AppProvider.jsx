@@ -8,6 +8,7 @@ import { usePathname, redirect } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/appSlice";
 import Loading from "@/app/loading";
+import Header from "@/component/Header";
 
 // List of public routes that don't require authentication
 const PUBLIC_ROUTES = ['/log-in'];
@@ -65,7 +66,10 @@ export function AppProvider({ children }) {
 
   return (
     <SessionProvider>
-      <ThemeProvider attribute="class">{children}</ThemeProvider>
+      <ThemeProvider attribute="class">
+        <Header />
+        {children}
+        </ThemeProvider>
     </SessionProvider>
   );
 }

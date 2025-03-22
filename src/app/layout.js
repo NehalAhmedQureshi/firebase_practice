@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/redux/ReduxProvider";
-import { ErrorBoundary } from 'react-error-boundary';
+import ErrorBoundary from "@/components/ErrorBoundary";
 import Error from './error';
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ErrorBoundary FallbackComponent={Error}>
+        <ErrorBoundary fallback={<Error />}>
           <ReduxProvider>{children}</ReduxProvider>
         </ErrorBoundary>
       </body>
